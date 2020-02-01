@@ -37,7 +37,6 @@ Item {
         state: "DisplayProgressBar"
 
         Rectangle {
-            opacity: progressBar.opacity
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.bottom: parent.bottom
