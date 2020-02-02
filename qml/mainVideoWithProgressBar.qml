@@ -21,7 +21,7 @@ Item {
         anchors.fill: parent
         onClicked: {
             console.log("Mouse Pressed")
-            progressBar.state = (progressBar.state == "" ? "HideProgressBar":"")
+            progressBar.state = (progressBar.state == "DisplayProgressBar" ? "HideProgressBar":"DisplayProgressBar")
         }
     }
 
@@ -34,9 +34,9 @@ Item {
         anchors.margins: 100
         height: 30
         color: "lightGray"
+        state: "DisplayProgressBar"
 
         Rectangle {
-            //opacity: progressBar.opacity
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.bottom: parent.bottom
@@ -58,16 +58,25 @@ Item {
             }
         }
 
-        states:
+        states: [
             State {
                 name: "HideProgressBar"
                 PropertyChanges { target: progressBar; opacity: 0 }
                 PropertyChanges { target: mouseArea; enabled: false }
                 PropertyChanges { target: timer; running:false }
+            },
+            State {
+                name: "DisplayProgressBar"
+                PropertyChanges { target: progressBar; opacity: 1 }
+                PropertyChanges { target: mouseArea; enabled: true }
+                PropertyChanges { target: timer; running:true }
             }
+        ]
 
         transitions: [
             Transition {
+                from: "DisplayProgressBar"; to: "HideProgressBar"
+            //            from: "*"; to: "*"
                 PropertyAnimation { target: progressBar; properties: "opacity"; duration: 500 }
             }
         ]
@@ -75,10 +84,10 @@ Item {
             id: timer
             interval: 5000
             repeat: false
-            running: true
+            running: false
             onTriggered: {
                 console.log("timer triggered")
-                if ( progressBar.state == "")
+                if ( progressBar.state == "DisplayProgressBar")
                     progressBar.state = "HideProgressBar"
             }
         }
