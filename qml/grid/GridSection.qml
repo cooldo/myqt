@@ -9,6 +9,10 @@ Flickable {
     property Component sectionDelegate: Item {}
     contentHeight: layout.height
     contentWidth: layout.width
+    function appendNewItem(name) {
+        layout.appendNewItem(name)
+    }
+
     Rectangle {
         anchors.fill: parent
         color: "black"
@@ -32,6 +36,24 @@ Flickable {
                 root.itemDelegate.createObject(layout, { "name": element.name, "index": i});
                 lastSection = section
             }
+        }
+        function appendNewItem(name) {
+            var section = name.split(":")[0]
+            var oldSection = root.model.get(root.model.count-1).name.split(":")[0]
+            if(section === oldSection) {
+                root.itemDelegate.createObject(layout, { "name": name, "index": root.model.count});
+                console.log("gaoqiang1")
+            }
+            else {
+                root.sectionDelegate.createObject(layout, { "name": section, "Layout.columnSpan": 3});
+                root.itemDelegate.createObject(layout, { "name": section, "index": root.model.count});
+                console.log("gaoqiang2")
+            }
+
+
+
+
+
         }
     }
     }
